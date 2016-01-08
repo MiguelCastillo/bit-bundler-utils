@@ -11,17 +11,27 @@ var defaults = {
 
 
 function Plugin(options) {
-  var plugin = utils.extend({}, defaults);
-  return Plugin.configure(plugin, options);
+  this._configuration = configure(utils.merge({}, defaults), options);
+}
+
+
+Plugin.prototype.configure = function(options) {
+  this._configuration = configure(this._configuration, options);
+  return this;
+};
+
+
+Plugin.prototype.build = function() {
+  return utils.merge({}, this._configuration);
 }
 
 
 Plugin.create = function(options) {
-  return Plugin(options);
+  return new Plugin(options);
 };
 
 
-Plugin.configure = function(plugin, options) {
+function configure(pluginConfig, options) {
   options = options || {};
 
   Object.keys(options)
@@ -36,18 +46,18 @@ Plugin.configure = function(plugin, options) {
       };
     })
     .forEach(function(config) {
-      plugin[config.name] = plugin[config.name].concat(config.value);
+      pluginConfig[config.name] = pluginConfig[config.name].concat(config.value);
     });
 
   if (options.match) {
-    plugin.match = utils.merge({}, plugin.match, options.match);
+    pluginConfig.match = utils.merge({}, pluginConfig.match, options.match);
   }
 
   if (options.ignore) {
-    plugin.ignore = utils.merge({}, plugin.ignore, options.ignore);
+    pluginConfig.ignore = utils.merge({}, pluginConfig.ignore, options.ignore);
   }
 
-  return plugin;
+  return pluginConfig;
 };
 
 
