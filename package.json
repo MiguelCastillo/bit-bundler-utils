@@ -23,7 +23,9 @@
     "belty": "^0.3.0",
     "browser-resolve": "^1.11.0",
     "dis-isa": "^1.2.2",
-    "loggero": "^2.0.1"
+    "isbinaryfile": "^3.0.0",
+    "loggero": "^2.0.1",
+    "p-stream": "^1.0.3"
   },
   "devDependencies": {
     "grunt": "^0.4.5",

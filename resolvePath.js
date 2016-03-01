@@ -1,4 +1,4 @@
-var logger = require("loggero").create("bundler/resolvePath");
+var logger = require("loggero").create("resolvePath");
 var browserResolve = require("browser-resolve");
 
 
@@ -8,17 +8,22 @@ function getDirectory(path) {
 
 
 /**
- * Resolves the path for the moduleMeta object.  It uses process.cwd as the baseUrl
+ * Resolves the path for modules.
+ *
+ * @param {{ string: name }} input - Object with module `name` to resolve the path for.
+ * @returns {Promise}
  */
-function resolver(moduleMeta) {
-  return resolve(moduleMeta, {baseUrl: process.cwd()});
+function resolver(input) {
+  return resolve(input, { baseUrl: process.cwd() });
 }
 
 
 /**
  * Configurator for resolver. This will create and return a resolve function to be
- * called with the moduleMeta, which will be processed with the options passed in
- * when configure was called.
+ * called with the input object.
+ *
+ * @param {object} options - Options for `browser-resolve`. Defaults `baseUrl` to `process.cwd()`.
+ * @returns {function} to be called with object containing module `name` to be resolved.
  */
 resolver.configure = function(options) {
   options = options || {};
@@ -27,16 +32,18 @@ resolver.configure = function(options) {
     options.baseUrl = process.cwd();
   }
 
-  return function resolveDelegate(moduleMeta) {
-    return resolve(moduleMeta, options);
+  return function resolveDelegate(input) {
+    return resolve(input, options);
   };
 };
 
 
 /**
  * Convert module name to full module path
+ *
+ * @private
  */
-function resolve(moduleMeta, options) {
+function resolve(input, options) {
   function setPath(path) {
     if (path) {
       return {
@@ -47,29 +54,31 @@ function resolve(moduleMeta, options) {
   }
 
   function logError(err) {
-    logger.error(moduleMeta.name, err);
+    logger.error(input.name, err);
     throw err;
   }
 
-  return resolvePath(moduleMeta, options).then(setPath, logError);
+  return resolvePath(input, options).then(setPath, logError);
 }
 
 
 /**
- * Figures out the path for the moduleMeta so that the module file can be loaded from storage.
+ * Figures out the path for the input so that the module file can be loaded from storage.
  *
  * We use browser-resolve to do the heavy lifting for us, so all this module is really doing
  * is wrapping browser-resolve so that it can be used by bit loader in a convenient way.
+ *
+ * @private
  */
-function resolvePath(moduleMeta, options) {
-  var parentPath = getParentPath(moduleMeta, options);
+function resolvePath(input, options) {
+  var parentPath = getParentPath(input, options);
 
   // Experimental use of app paths by name rather then path.  E.g.
   // require('app/test');
   // vs
   // require('./app/test);
   //
-  //  var filePath = path.resolve(path.dirname(options.baseUrl), moduleMeta.name);
+  //  var filePath = path.resolve(path.dirname(options.baseUrl), input.name);
   //  var stat = fs.statSync(filePath);
   //
   //  if (stat.isFile()) {
@@ -77,7 +86,7 @@ function resolvePath(moduleMeta, options) {
   //  }
 
   return new Promise(function(resolve) {
-    browserResolve(moduleMeta.name, {filename: parentPath}, function(err, filePath) {
+    browserResolve(input.name, { filename: parentPath }, function(err, filePath) {
       resolve(filePath);
     });
   });
@@ -85,12 +94,14 @@ function resolvePath(moduleMeta, options) {
 
 
 /**
- * Gets the path for the module requesting the moduleMeta being resolved. This is what
+ * Gets the path for the module requesting the input being resolved. This is what
  * happens when a dependency is loaded.
+ *
+ * @private
  */
-function getParentPath(moduleMeta, options) {
-  var referrer = moduleMeta.referrer;
-  return (referrer && moduleMeta !== referrer) ? referrer.path : options.baseUrl;
+function getParentPath(input, options) {
+  var referrer = input.referrer;
+  return (referrer && input !== referrer) ? referrer.path : options.baseUrl;
 }
 
 
