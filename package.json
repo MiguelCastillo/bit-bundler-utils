@@ -1,7 +1,7 @@
 {
   "name": "bit-bundler-utils",
   "version": "2.0.0",
-  "description": "Helpers for bit-bundler",
+  "description": "nodejs helpers for bit-bundler and bit-imports",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
