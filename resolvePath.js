@@ -101,7 +101,7 @@ function resolvePath(input, options) {
  */
 function getParentPath(input, options) {
   var referrer = input.referrer;
-  return (referrer && input !== referrer) ? referrer.path : options.baseUrl;
+  return (referrer && input !== referrer && referrer.path) ? referrer.path : options.baseUrl;
 }
 
 
