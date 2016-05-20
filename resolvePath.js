@@ -14,7 +14,7 @@ function getDirectory(path) {
  * @returns {Promise}
  */
 function resolver(input) {
-  return resolve(input, { baseUrl: process.cwd() });
+  return resolve(input, { baseUrl: process.cwd() + "/some-file-does-is-only-for-browser-resolve.abc"});
 }
 
 
@@ -29,7 +29,7 @@ resolver.configure = function(options) {
   options = options || {};
 
   if (!options.baseUrl) {
-    options.baseUrl = process.cwd();
+    options.baseUrl = process.cwd() + "/some-file-does-is-only-for-browser-resolve.abc";
   }
 
   return function resolveDelegate(input) {
