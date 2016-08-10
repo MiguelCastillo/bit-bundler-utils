@@ -1,4 +1,3 @@
-var logger = require("loggero").create("resolvePath");
 var browserResolve = require("browser-resolve");
 
 
@@ -53,12 +52,7 @@ function resolve(input, options) {
     }
   }
 
-  function logError(err) {
-    logger.error(input.name, err);
-    throw err;
-  }
-
-  return resolvePath(input, options).then(setPath, logError);
+  return resolvePath(input, options).then(setPath);
 }
 
 
@@ -85,9 +79,14 @@ function resolvePath(input, options) {
   //    return Promise.resolve(filePath);
   //  }
 
-  return new Promise(function(resolve) {
+  return new Promise(function(resolve, reject) {
     browserResolve(input.name, { filename: parentPath }, function(err, filePath) {
-      resolve(filePath);
+      if (err) {
+        reject(err);
+      }
+      else {
+        resolve(filePath);
+      }
     });
   });
 }
