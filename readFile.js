@@ -10,18 +10,21 @@ var isBinaryFile = require("isbinaryfile");
  * @param {{ string: path }} input - Module meta with information about the module being loaded
  */
 function fileReader(input) {
+  var s = readFile(input.path);
+  return pstream(s).then(setSource, logError);
+
   function setSource(text) {
+    s.close();
     return {
       source: text
     };
   }
 
   function logError(err) {
+    s.close();
     logger.error(input.path, err);
     throw err;
   }
-
-  return pstream(readFile(input.path)).then(setSource, logError);
 }
 
 
