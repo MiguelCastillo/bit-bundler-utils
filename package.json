@@ -20,18 +20,18 @@
   },
   "homepage": "https://github.com/MiguelCastillo/bit-bundler-utils",
   "dependencies": {
-    "belty": "^3.0.0",
-    "browser-resolve": "^1.11.0",
+    "belty": "^4.0.3",
+    "browser-resolve": "^1.11.2",
     "dis-isa": "^1.2.2",
     "graceful-fs": "^4.1.5",
-    "isbinaryfile": "^3.0.0",
+    "isbinaryfile": "^3.0.1",
     "loggero": "^2.0.1",
     "p-stream": "^1.0.3"
   },
   "devDependencies": {
     "grunt": "^1.0.1",
-    "grunt-eslint": "^18.1.0",
-    "grunt-release": "^0.13.0",
+    "grunt-eslint": "^19.0.0",
+    "grunt-release": "^0.14.0",
     "load-grunt-tasks": "^3.4.0"
   }
 }
