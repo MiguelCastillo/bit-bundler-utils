@@ -1,5 +1,5 @@
 var logger = require("loggero").create("readFile");
-var fs = require("fs");
+var fs = require("graceful-fs");
 var pstream = require("p-stream");
 var isBinaryFile = require("isbinaryfile");
 

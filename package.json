@@ -23,6 +23,7 @@
     "belty": "^3.0.0",
     "browser-resolve": "^1.11.0",
     "dis-isa": "^1.2.2",
+    "graceful-fs": "^4.1.5",
     "isbinaryfile": "^3.0.0",
     "loggero": "^2.0.1",
     "p-stream": "^1.0.3"
