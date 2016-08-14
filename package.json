@@ -32,6 +32,6 @@
     "grunt": "^1.0.1",
     "grunt-eslint": "^19.0.0",
     "grunt-release": "^0.14.0",
-    "load-grunt-tasks": "^3.4.0"
+    "load-grunt-tasks": "^3.5.2"
   }
 }
