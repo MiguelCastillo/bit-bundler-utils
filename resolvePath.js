@@ -1,10 +1,9 @@
 var browserResolve = require("browser-resolve");
-
+var processed = {};
 
 function getDirectory(path) {
-  return path.replace(/([^/]+)$/gmi, function() {return "";});
+  return path && path.replace(/([^/]+)$/gm, "");
 }
-
 
 /**
  * Resolves the path for modules.
@@ -13,9 +12,8 @@ function getDirectory(path) {
  * @returns {Promise}
  */
 function resolver(input) {
-  return resolve(input, { baseUrl: process.cwd() + "/some-file-does-is-only-for-browser-resolve.abc"});
+  return resolve(input, { baseUrl: process.cwd() + "/a"});
 }
-
 
 /**
  * Configurator for resolver. This will create and return a resolve function to be
@@ -28,14 +26,13 @@ resolver.configure = function(options) {
   options = options || {};
 
   if (!options.baseUrl) {
-    options.baseUrl = process.cwd() + "/some-file-does-is-only-for-browser-resolve.abc";
+    options.baseUrl = process.cwd() + "/a";
   }
 
   return function resolveDelegate(input) {
     return resolve(input, options);
   };
 };
-
 
 /**
  * Convert module name to full module path
@@ -55,7 +52,6 @@ function resolve(input, options) {
   return resolvePath(input, options).then(setPath);
 }
 
-
 /**
  * Figures out the path for the input so that the module file can be loaded from storage.
  *
@@ -66,6 +62,11 @@ function resolve(input, options) {
  */
 function resolvePath(input, options) {
   var parentPath = getParentPath(input, options);
+  var cached = getCached(input);
+
+  if (cached) {
+    return Promise.resolve(cached);
+  }
 
   // Experimental use of app paths by name rather then path.  E.g.
   // require('app/test');
@@ -85,12 +86,12 @@ function resolvePath(input, options) {
         reject(err);
       }
       else {
+        setCached(input, filePath);
         resolve(filePath);
       }
     });
   });
 }
-
 
 /**
  * Gets the path for the module requesting the input being resolved. This is what
@@ -103,5 +104,26 @@ function getParentPath(input, options) {
   return (referrer && input !== referrer && referrer.path) ? referrer.path : options.baseUrl;
 }
 
+function getCached(input) {
+  var directory = getDirectory(input.referrer && input.referrer.path);
+  var name = input.name;
+
+  if (directory && processed[directory]) {
+    return processed[directory][name];
+  }
+}
+
+function setCached(input, value) {
+  var directory = getDirectory(input.referrer && input.referrer.path);
+  var name = input.name;
+
+  if (directory) {
+    if (!processed[directory]) {
+      processed[directory] = {};
+    }
+
+    processed[directory][name] = value;
+  }
+}
 
 module.exports = resolver;
