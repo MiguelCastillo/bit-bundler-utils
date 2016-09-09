@@ -73,7 +73,11 @@ function getSafeFileStat(filePath) {
   try {
     return fs.statSync(filePath);
   }
-  catch(ex) {}
+  catch(ex) {
+    if (ex.code !== "ENOENT") {
+      throw ex;
+    }
+  }
 }
 
 function getParentPath(input, options) {
