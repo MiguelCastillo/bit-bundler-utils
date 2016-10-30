@@ -1,8 +1,6 @@
-var logger = require("loggero").create("readFile");
 var fs = require("fs");
 var pstream = require("p-stream");
 var isBinaryFile = require("isbinaryfile");
-
 
 /**
  * Function that reads file from disk
@@ -22,10 +20,8 @@ function fileReader(input) {
 
   function logError(err) {
     stream.close();
-    logger.error(input.path, err);
     throw err;
   }
 }
-
 
 module.exports = fileReader;
