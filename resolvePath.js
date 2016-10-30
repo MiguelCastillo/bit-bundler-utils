@@ -1,7 +1,7 @@
 var path = require("path");
 var browserResolve = require("browser-resolve");
 var fs = require("fs");
-var processed = {};
+var cache = {};
 
 function getDirectory(path) {
   return path && path.replace(/([^/]+)$/gm, "");
@@ -88,8 +88,8 @@ function getParentPath(input, options) {
 function getCached(input) {
   var directory = getDirectory(input.referrer && input.referrer.path);
 
-  if (processed[directory]) {
-    return processed[directory][input.name];
+  if (cache[directory]) {
+    return cache[directory][input.name];
   }
 }
 
@@ -97,11 +97,11 @@ function setCached(input, value) {
   var directory = getDirectory(input.referrer && input.referrer.path);
 
   if (directory) {
-    if (!processed[directory]) {
-      processed[directory] = {};
+    if (!cache[directory]) {
+      cache[directory] = {};
     }
 
-    processed[directory][input.name] = value;
+    cache[directory][input.name] = value;
   }
 }
 
