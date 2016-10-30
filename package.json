@@ -1,6 +1,6 @@
 {
   "name": "bit-bundler-utils",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "description": "nodejs helpers for bit-bundler and bit-imports",
   "main": "index.js",
   "scripts": {
