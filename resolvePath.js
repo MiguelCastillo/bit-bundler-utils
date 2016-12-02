@@ -46,7 +46,7 @@ function setPath(filePath) {
 }
 
 function localResolve(input, parentPath) {
-  if (/\W/.test(input.name)) {
+  if (input.name.indexOf("://") !== -1 || /^[\.\/]/.test(input.name)) {
     var filePath = path.resolve(parentPath, input.name);
     var stat = getSafeFileStat(filePath);
 
