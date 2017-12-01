@@ -1,10 +1,9 @@
 {
   "name": "bit-bundler-utils",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "description": "nodejs helpers for bit-bundler and bit-imports",
   "main": "index.js",
-  "scripts": {
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "https://github.com/MiguelCastillo/bit-bundler-utils.git"
