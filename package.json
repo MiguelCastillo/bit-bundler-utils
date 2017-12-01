@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/MiguelCastillo/bit-bundler-utils",
   "dependencies": {
-    "belty": "^4.0.3",
+    "belty": "^5.1.0",
     "browser-resolve": "^1.11.2",
     "dis-isa": "^1.2.2",
     "isbinaryfile": "^3.0.1",
@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "grunt": "^1.0.1",
-    "grunt-eslint": "^19.0.0",
+    "grunt-eslint": "^20.1.0",
     "grunt-release": "^0.14.0",
     "load-grunt-tasks": "^3.5.2"
   }
