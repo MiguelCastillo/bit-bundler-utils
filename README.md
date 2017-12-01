@@ -1,4 +1,6 @@
 # bit-bundler-utils
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/MiguelCastillo/bit-bundler-utils.svg)](https://greenkeeper.io/)
 nodejs helpers for bit-bundler and bit-imports
 
 
