@@ -3,7 +3,9 @@
   "version": "5.1.0",
   "description": "nodejs helpers for bit-bundler and bit-imports",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "eslint index.js readFile.js resolvePath.js uniqueId.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/MiguelCastillo/bit-bundler-utils.git"
@@ -26,6 +28,7 @@
     "p-stream": "^1.0.3"
   },
   "devDependencies": {
+    "eslint": "^4.13.1",
     "grunt": "^1.0.1",
     "grunt-eslint": "^20.1.0",
     "grunt-release": "^0.14.0",

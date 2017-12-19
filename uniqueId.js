@@ -3,7 +3,6 @@ function uniqueIdFactory() {
   var idCounter = 1;
   
   function getId(id) {
-    debugger;
     if (!ids[id]) {
       ids[id] = idCounter++;
     }
