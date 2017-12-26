@@ -1,6 +1,4 @@
-var path = require("path");
-var browserResolve = require("browser-resolve");
-var fs = require("fs");
+var moduleResolver = require("resolve");
 var cache = {};
 
 function getDirectory(path) {
@@ -28,15 +26,15 @@ function resolvePath(input, options) {
   var cached = getCached(input);
 
   if (cached) {
-    return cached.then(setPath);
+    return cached.then(buildResult);
   }
 
-  var deferred = localResolve(input, parentPath) || nodeResolve(input, parentPath);
+  var deferred = resolveModule(input, parentPath);
   setCached(input, deferred);
-  return deferred.then(setPath);
+  return deferred.then(buildResult);
 }
 
-function setPath(filePath) {
+function buildResult(filePath) {
   if (filePath) {
     return {
       directory: getDirectory(filePath),
@@ -45,39 +43,15 @@ function setPath(filePath) {
   }
 }
 
-function localResolve(input, parentPath) {
-  if (input.name.indexOf("://") !== -1 || /^[\.\/]/.test(input.name)) {
-    var filePath = path.resolve(parentPath, input.name);
-    var stat = getSafeFileStat(filePath);
-
-    if (stat && stat.isFile()) {
-      return Promise.resolve(filePath);
-    }
-  }
-}
-
-function nodeResolve(input, parentPath) {
+function resolveModule(input, parentPath) {
   return new Promise(function(resolve, reject) {
-    browserResolve(input.name, { basedir: parentPath }, function(err, filePath) {
-      if (err) {
-        reject(err);
-      }
-      else {
-        resolve(filePath);
-      }
-    });
-  });
-}
-
-function getSafeFileStat(filePath) {
-  try {
-    return fs.statSync(filePath);
-  }
-  catch(ex) {
-    if (ex.code !== "ENOENT") {
-      throw ex;
+    try {
+      resolve(moduleResolver.sync(input.name, { basedir: parentPath }));
     }
-  }
+    catch(ex) {
+      reject(ex);
+    }
+  });
 }
 
 function getParentPath(input, options) {
