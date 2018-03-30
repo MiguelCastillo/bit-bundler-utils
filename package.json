@@ -1,5 +1,5 @@
 {
-  "name": "bit-bundler-utils",
+  "name": "@bit/bundler-utils",
   "version": "5.1.2",
   "description": "nodejs helpers for bit-bundler and bit-imports",
   "main": "index.js",
